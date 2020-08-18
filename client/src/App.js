@@ -32,7 +32,7 @@ function App() {
         <br /> */}
         <Switch>
           <Route exact path="/login" component={Login} />
-          <PrivateRoute path="/dashboard" component={DashBoard} />
+          <PrivateRoute exact path="/" component={DashBoard} />
           <Route path="*" exact={true} component={NotFound} />
         </Switch>
       </div>

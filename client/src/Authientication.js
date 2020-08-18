@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import React from 'react';
+import { Route, Redirect } from 'react-router-dom';
 
 export const fakeAuth = {
   isAuthenticated: false,
@@ -88,8 +88,8 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
       ) : (
         <Redirect
           to={{
-            pathname: "/login",
-            state: { from: props.location },
+            pathname: '/login',
+            state: { from: props.location, mustBeLdasdogin: true },
           }}
         />
       )

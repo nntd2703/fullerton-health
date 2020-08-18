@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import LoginFormComponent from "../../components/LoginForm";
-import { Redirect } from "react-router-dom";
-import { fakeAuth } from "../../Authientication";
+import React, { Component } from 'react';
+import LoginFormComponent from '../../components/LoginForm';
+import { Redirect } from 'react-router-dom';
+import { fakeAuth } from '../../Authientication';
 
 export default class Login extends Component {
   constructor(props) {
@@ -9,14 +9,16 @@ export default class Login extends Component {
     this.state = {
       redirectToReferrer: false,
       transactionToRoute: {
-        from: "",
+        from: '',
       },
     };
   }
   render() {
     const { redirectToReferrer, transactionToRoute } = this.state;
 
-    const { from } = this.props.location.state || { ...transactionToRoute };
+    const { from, mustBeLogin } = this.props.location.state || {
+      ...transactionToRoute,
+    };
 
     return (
       <div className="login-form">
@@ -24,7 +26,7 @@ export default class Login extends Component {
           <Redirect to={from} />
         ) : (
           <div className="login-form">
-            {from ? <p>You must log in to view the page</p> : null}
+            {mustBeLogin ? <p>You must log in to view the page</p> : null}
             <LoginFormComponent handleLogin={this.handleLogin} />
           </div>
         )}
@@ -33,18 +35,13 @@ export default class Login extends Component {
   }
 
   handleLogin = () => {
-    fakeAuth.authenticate(
-      () => {
-        this.setState(() => ({
-          transactionToRoute: {
-            from: "/dashboard",
-          },
-          redirectToReferrer: true,
-        }));
-      },
-      // () => {
-      //   this.props.history.push("/dashboard");
-      // },
-    );
+    fakeAuth.authenticate(() => {
+      this.setState(() => ({
+        transactionToRoute: {
+          from: '/',
+        },
+        redirectToReferrer: true,
+      }));
+    });
   };
 }

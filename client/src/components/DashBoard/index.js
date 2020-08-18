@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import Table from "../../generic-components/Table";
+import React, { Component } from 'react';
+import Table from '../../generic-components/Table';
 import {
   CContainer,
   CRow,
@@ -15,26 +15,23 @@ import {
   CInput,
   CFormText,
   CLabel,
-} from "@coreui/react";
-import Modals from "../../generic-components/Popover";
-import { ModalBody, ModalFooter } from "./form/ModalBody";
+} from '@coreui/react';
+import Modals from '../../generic-components/Popover';
+import { ModalBody } from './form/ModalBody';
 
 export default class DashBoardComponent extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isShowModal: false,
-    };
-  }
-
-  handleCloseModal = () => {
-    this.setState({
-      isShowModal: false,
-    });
-  };
-
   render() {
-    const { isShowModal } = this.state;
+    const {
+      isShowModal,
+      data,
+      handleCloseModal,
+      handleChange,
+      handleOnSubmit,
+      handleOpenModal,
+      isDisableCreateButton,
+      handleCancelBooking,
+    } = this.props;
+
     return (
       <CContainer fluid className="dash-board">
         <CRow className="d-flex justify-content-between m-2">
@@ -46,10 +43,16 @@ export default class DashBoardComponent extends Component {
         {isShowModal ? (
           <Modals
             isShowModal={isShowModal}
-            handleCloseModal={this.handleCloseModal}
+            handleCloseModal={handleCloseModal}
             title="Create new a Booking"
-            body={<ModalBody />}
-            footer={<ModalFooter handleCloseModal={this.handleCloseModal} />}
+            body={
+              <ModalBody
+                handleCloseModal={handleCloseModal}
+                handleFieldChange={handleChange}
+                handleOnSubmit={handleOnSubmit}
+                isDisableCreateButton={isDisableCreateButton}
+              />
+            }
           />
         ) : null}
         <div className="c-body">
@@ -62,17 +65,16 @@ export default class DashBoardComponent extends Component {
                     <CButton
                       size="sm"
                       color="success"
-                      onClick={() => {
-                        this.setState({
-                          isShowModal: true,
-                        });
-                      }}
+                      onClick={handleOpenModal}
                     >
                       Create a new Booking
                     </CButton>
                   </CCardHeader>
                   <CCardBody>
-                    <Table />
+                    <Table
+                      data={data}
+                      handleCancelBooking={handleCancelBooking}
+                    />
                   </CCardBody>
                 </CCard>
               </CCol>

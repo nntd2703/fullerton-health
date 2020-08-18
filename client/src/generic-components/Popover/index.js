@@ -1,26 +1,20 @@
-import React from "react";
-import {
-  CModal,
-  CModalBody,
-  CModalFooter,
-  CModalHeader,
-  CModalTitle,
-} from "@coreui/react";
+import React from 'react';
+import { CModal, CModalHeader, CModalTitle } from '@coreui/react';
 
 const Modals = (props) => {
-  const { isShowModal, title, body, footer, handleCloseModal } = props;
+  const { isShowModal, title, body, handleCloseModal, type } = props;
   return (
     <CModal
       show={isShowModal}
       onClose={() => {
         handleCloseModal();
       }}
+      color={type || 'success'}
     >
       <CModalHeader closeButton>
         <CModalTitle>{title}</CModalTitle>
       </CModalHeader>
-      <CModalBody>{body}</CModalBody>
-      <CModalFooter>{footer}</CModalFooter>
+      {body}
     </CModal>
   );
 };

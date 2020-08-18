@@ -1,55 +1,62 @@
-import React from "react";
-import { CButton, CDataTable, CBadge } from "@coreui/react";
-import usersData from "./example";
+import React from 'react';
+import { CButton, CDataTable, CBadge } from '@coreui/react';
+import { FIELDS, TYPE_OF_EVENT } from '../../constant';
 
-const Table = () => {
-  const fields = [
-    { key: "typeOfEvent", _style: { width: "40%" } },
-    { key: "locationOfEvent", _style: { width: "20%" } },
-    { key: "dateTime", _style: { width: "20%" } },
-    { key: "status", _style: { width: "20%" } },
-    {
-      key: "show_details",
-      label: "",
-      _style: { width: "1%" },
-      sorter: false,
-      filter: false,
-    },
-  ];
-
+const Table = (props) => {
   const getBadge = (status) => {
     switch (status) {
-      case "Approved":
-        return "success";
-      case "Cancel":
-        return "secondary";
-      case "Pending":
-        return "warning";
-      case "Reject":
-        return "danger";
+      case 'Approved':
+        return 'success';
+      case 'Cancel':
+        return 'secondary';
+      case 'Pending Review':
+        return 'warning';
+      case 'Reject':
+        return 'danger';
       default:
-        return "primary";
+        return 'primary';
     }
   };
 
   return (
     <CDataTable
-      items={usersData}
-      fields={fields}
+      items={props.data}
+      fields={FIELDS}
       itemsPerPage={10}
       pagination
       sorter
       tableFilter
       scopedSlots={{
+        typeOfEvent: ({ typeOfEvent }) => {
+          console.log('typeOfEvent', typeOfEvent);
+          const { label = '' } = typeOfEvent
+            ? TYPE_OF_EVENT.find((item) => item.value === typeOfEvent)
+            : '';
+          return <td>{label}</td>;
+        },
+        dateTime: (item) => (
+          <td>
+            <CBadge color="secondary">{item.oneOptionDate}</CBadge>
+            <CBadge color="secondary">{item.secondOptionDate}</CBadge>
+            <CBadge color="secondary">{item.thirdOptionDate}</CBadge>
+          </td>
+        ),
         status: (item) => (
           <td>
             <CBadge color={getBadge(item.status)}>{item.status}</CBadge>
           </td>
         ),
-        show_details: (item, index) => {
+        cancel: (item, index) => {
           return (
             <td className="py-2">
-              <CButton size="sm" color="danger" className="ml-1">
+              <CButton
+                size="sm"
+                color="danger"
+                className="ml-1"
+                onClick={() => {
+                  props.handleCancelBooking(index);
+                }}
+              >
                 Cancel
               </CButton>
             </td>
