@@ -33,16 +33,21 @@ const Table = (props) => {
             : '';
           return <td>{label}</td>;
         },
-        dateTime: (item) => (
-          <td>
-            <CBadge color="secondary">{item.oneOptionDate}</CBadge>
-            <CBadge color="secondary">{item.secondOptionDate}</CBadge>
-            <CBadge color="secondary">{item.thirdOptionDate}</CBadge>
-          </td>
-        ),
+        dateTime: (item) => {
+          return !item.dateTime ? (
+            <td>
+              <CBadge color="secondary">{item.oneOptionDate}</CBadge>
+              <CBadge color="secondary">{item.secondOptionDate}</CBadge>
+              <CBadge color="secondary">{item.thirdOptionDate}</CBadge>
+            </td>
+          ) : (
+            <td>{item.dateTime}</td>
+          );
+        },
         status: (item) => (
           <td>
             <CBadge color={getBadge(item.status)}>{item.status}</CBadge>
+            {item.reason ? `Reason reject: ${item.reason}` : null}
           </td>
         ),
         cancel: (item, index) => {
@@ -55,8 +60,9 @@ const Table = (props) => {
                     color="success"
                     className="ml-1"
                     onClick={() => {
-                      props.handleApproveBooking(index);
+                      props.handleApproveBooking(item, index);
                     }}
+                    disabled={!!item.dateTime || !!item.reason}
                   >
                     Approved
                   </CButton>
@@ -67,6 +73,7 @@ const Table = (props) => {
                     onClick={() => {
                       props.handleRejectBooking(index);
                     }}
+                    disabled={!!item.dateTime || !!item.reason}
                   >
                     Reject
                   </CButton>
@@ -79,6 +86,7 @@ const Table = (props) => {
                   onClick={() => {
                     props.handleCancelBooking(index);
                   }}
+                  disabled={!!item.dateTime || !!item.reason}
                 >
                   Cancel
                 </CButton>

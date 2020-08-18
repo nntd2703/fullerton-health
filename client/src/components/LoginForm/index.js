@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   CContainer,
   CRow,
@@ -9,7 +9,7 @@ import {
   CInput,
   CFormText,
   CButton,
-} from "@coreui/react";
+} from '@coreui/react';
 
 export default class LoginFormComponent extends Component {
   render() {
