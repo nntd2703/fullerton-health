@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import { PERMISSION } from './constant';
 
 export const fakeAuth = {
   isAuthenticated: false,
@@ -84,7 +85,7 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
     {...rest}
     render={(props) =>
       fakeAuth.isAuthenticated === true ? (
-        <Component {...props} />
+        <Component {...props} permission={PERMISSION.admin} />
       ) : (
         <Redirect
           to={{

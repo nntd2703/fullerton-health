@@ -1,14 +1,12 @@
 import React from 'react';
 import { CButton, CDataTable, CBadge } from '@coreui/react';
-import { FIELDS, TYPE_OF_EVENT } from '../../constant';
+import { FIELDS, TYPE_OF_EVENT, PERMISSION } from '../../constant';
 
 const Table = (props) => {
   const getBadge = (status) => {
     switch (status) {
-      case 'Approved':
+      case 'Approval':
         return 'success';
-      case 'Cancel':
-        return 'secondary';
       case 'Pending Review':
         return 'warning';
       case 'Reject':
@@ -18,9 +16,11 @@ const Table = (props) => {
     }
   };
 
+  const { permission, data } = props;
+
   return (
     <CDataTable
-      items={props.data}
+      items={data}
       fields={FIELDS}
       itemsPerPage={10}
       pagination
@@ -28,7 +28,6 @@ const Table = (props) => {
       tableFilter
       scopedSlots={{
         typeOfEvent: ({ typeOfEvent }) => {
-          console.log('typeOfEvent', typeOfEvent);
           const { label = '' } = typeOfEvent
             ? TYPE_OF_EVENT.find((item) => item.value === typeOfEvent)
             : '';
@@ -49,16 +48,41 @@ const Table = (props) => {
         cancel: (item, index) => {
           return (
             <td className="py-2">
-              <CButton
-                size="sm"
-                color="danger"
-                className="ml-1"
-                onClick={() => {
-                  props.handleCancelBooking(index);
-                }}
-              >
-                Cancel
-              </CButton>
+              {permission === PERMISSION.admin ? (
+                <>
+                  <CButton
+                    size="sm"
+                    color="success"
+                    className="ml-1"
+                    onClick={() => {
+                      props.handleApproveBooking(index);
+                    }}
+                  >
+                    Approved
+                  </CButton>
+                  <CButton
+                    size="sm"
+                    color="danger"
+                    className="ml-1"
+                    onClick={() => {
+                      props.handleRejectBooking(index);
+                    }}
+                  >
+                    Reject
+                  </CButton>
+                </>
+              ) : (
+                <CButton
+                  size="sm"
+                  color="danger"
+                  className="ml-1"
+                  onClick={() => {
+                    props.handleCancelBooking(index);
+                  }}
+                >
+                  Cancel
+                </CButton>
+              )}
             </td>
           );
         },

@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import DashBoardComponent from '../../components/DashBoard';
 import moment from 'moment';
+import { PERMISSION, DEFAULT_DATA, STATUS } from '../../constant';
 
 export default class DashBoard extends Component {
   constructor(props) {
     super(props);
+
+    const { permission } = this.props;
+
     this.state = {
       isShowModal: false,
       newBookingData: {},
-      data: [],
+      data: permission === PERMISSION.admin ? DEFAULT_DATA : [],
     };
   }
 
@@ -37,7 +41,6 @@ export default class DashBoard extends Component {
 
   _handleOnSubmit = () => {
     const { newBookingData } = this.state;
-    console.log(Object.keys(newBookingData).length);
     if (Object.keys(newBookingData).length !== 0) {
       this.setState((preState) => ({
         ...preState,
@@ -60,12 +63,41 @@ export default class DashBoard extends Component {
     }));
   };
 
+  _handleApproveBooking = (positions) => {
+    this.setState((preState) => {
+      const cloneData = [...preState.data];
+      cloneData[positions] = {
+        ...cloneData[positions],
+        status: STATUS.approved,
+      };
+      return {
+        ...preState,
+        data: [...cloneData],
+      };
+    });
+  };
+
+  _handleRejectBooking = (positions) => {
+    this.setState((preState) => {
+      const cloneData = [...preState.data];
+      cloneData[positions] = {
+        ...cloneData[positions],
+        status: STATUS.reject,
+      };
+      return {
+        ...preState,
+        data: [...cloneData],
+      };
+    });
+  };
+
   render() {
+    const { permission } = this.props;
     const { isShowModal, data, newBookingData } = this.state;
-    console.log(Object.keys(newBookingData).length);
     return (
       <div>
         <DashBoardComponent
+          permission={permission}
           data={data}
           isShowModal={isShowModal}
           isDisableCreateButton={Object.keys(newBookingData).length === 0}
@@ -74,6 +106,8 @@ export default class DashBoard extends Component {
           handleCloseModal={this._handleCloseModal}
           handleChange={this._handleChange}
           handleCancelBooking={this._handleCancelBooking}
+          handleApproveBooking={this._handleApproveBooking}
+          handleRejectBooking={this._handleRejectBooking}
         />
       </div>
     );

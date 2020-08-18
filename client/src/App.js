@@ -1,15 +1,16 @@
-import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
-} from "react-router-dom";
-import Login from "./features/Login/index";
-import DashBoard from "./features/Dashboard";
-import NotFound from "./components/NotFound";
-import { PrivateRoute } from "./Authientication";
+} from 'react-router-dom';
+import Login from './features/Login/index';
+import DashBoard from './features/Dashboard';
+import NotFound from './components/NotFound';
+import { PrivateRoute } from './Authientication';
+import { PERMISSION } from './constant';
 
 function App() {
   return (

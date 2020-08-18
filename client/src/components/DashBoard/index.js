@@ -18,18 +18,19 @@ import {
 } from '@coreui/react';
 import Modals from '../../generic-components/Popover';
 import { ModalBody } from './form/ModalBody';
+import { PERMISSION } from '../../constant';
 
 export default class DashBoardComponent extends Component {
   render() {
     const {
+      permission,
       isShowModal,
       data,
       handleCloseModal,
-      handleChange,
-      handleOnSubmit,
-      handleOpenModal,
-      isDisableCreateButton,
       handleCancelBooking,
+      handleOpenModal,
+      handleRejectBooking,
+      handleApproveBooking,
     } = this.props;
 
     return (
@@ -45,14 +46,7 @@ export default class DashBoardComponent extends Component {
             isShowModal={isShowModal}
             handleCloseModal={handleCloseModal}
             title="Create new a Booking"
-            body={
-              <ModalBody
-                handleCloseModal={handleCloseModal}
-                handleFieldChange={handleChange}
-                handleOnSubmit={handleOnSubmit}
-                isDisableCreateButton={isDisableCreateButton}
-              />
-            }
+            body={<ModalBody {...this.props} />}
           />
         ) : null}
         <div className="c-body">
@@ -62,18 +56,23 @@ export default class DashBoardComponent extends Component {
                 <CCard>
                   <CCardHeader className="d-flex justify-content-between">
                     Booking Table
-                    <CButton
-                      size="sm"
-                      color="success"
-                      onClick={handleOpenModal}
-                    >
-                      Create a new Booking
-                    </CButton>
+                    {permission === !PERMISSION.admin ? (
+                      <CButton
+                        size="sm"
+                        color="success"
+                        onClick={handleOpenModal}
+                      >
+                        Create a new Booking
+                      </CButton>
+                    ) : null}
                   </CCardHeader>
                   <CCardBody>
                     <Table
+                      permission={permission}
                       data={data}
                       handleCancelBooking={handleCancelBooking}
+                      handleRejectBooking={handleRejectBooking}
+                      handleApproveBooking={handleApproveBooking}
                     />
                   </CCardBody>
                 </CCard>
