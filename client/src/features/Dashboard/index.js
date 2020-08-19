@@ -13,7 +13,7 @@ export default class DashBoard extends Component {
     this.state = {
       isShowModal: false,
       newBookingData: {},
-      data: permission === PERMISSION.admin ? DEFAULT_DATA : [],
+      data: DEFAULT_DATA,
       modalHandleStatus: null,
     };
 
