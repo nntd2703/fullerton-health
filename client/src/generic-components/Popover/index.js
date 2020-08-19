@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { CModal, CModalHeader, CModalTitle } from '@coreui/react';
 
 const Modals = (props) => {
